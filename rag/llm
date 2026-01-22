@@ -1,0 +1,24 @@
+from groq import Groq
+from config import GROQ_API_KEY, LLM_MODEL
+
+client = Groq(api_key=GROQ_API_KEY)
+
+def call_llm(context, question):
+    prompt = f"""
+You are a helpful assistant.
+Answer the question using ONLY the context below.
+
+Context:
+{context}
+
+Question:
+{question}
+"""
+
+    response = client.chat.completions.create(
+        model=LLM_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3
+    )
+
+    return response.choices[0].message.content
